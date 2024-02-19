@@ -28,6 +28,7 @@ import haxe.io.Path;
 import sys.FileSystem;
 import sys.io.File;
 import sys.io.Process;
+import lime.system.System;
 
 using StringTools;
 
@@ -44,6 +45,8 @@ class Main extends Sprite
 
 	// You can pretty much ignore everything from here on - your code should go in your states.
 
+	public static var ata = System.applicationStorageDirectory(); // só para o filesystem n crashar 
+	
 	public static function main():Void
 	{
 		Lib.current.addChild(new Main());
@@ -91,7 +94,7 @@ class Main extends Sprite
 		ClientPrefs.loadDefaultKeys();
 		addChild(new FlxGame(gameWidth, gameHeight, initialState, zoom, framerate, framerate, skipSplash, startFullscreen));
 
-		#if !mobile
+		#if android
 		fpsVar = new FPS(10, 3, 0xFFFFFF);
 		addChild(fpsVar);
 		Lib.current.stage.align = "tl";
@@ -126,7 +129,7 @@ class Main extends Sprite
 		dateNow = dateNow.replace(" ", "_");
 		dateNow = dateNow.replace(":", "'");
 
-		path = "./crashlogs/" + "VsFNaF3_" + dateNow + ".txt";
+		path = ata + "/crashlogs/" + "VsFNaF3_" + dateNow + ".txt";
 
 		for (stackItem in callStack)
 		{
@@ -141,8 +144,8 @@ class Main extends Sprite
 
 		errMsg += "\nUncaught Error: " + e.error + "\nPlease report this error either in '#mod-issues in PouriaSFMs discord server'\n or @AutisticLulu on Discord\n or to the GitHub page: https://github.com/MeguminBOT/fnf-fnaf3-source/issues\n\nDon't forget to send the Crashlog!!\n\n> Crash Handler written by: sqirra-rng";
 
-		if (!FileSystem.exists("./crash/"))
-			FileSystem.createDirectory("./crash/");
+		if (!Assets.exists("/crash/"))
+			FileSystem.createDirectory(ata + "/crash/");
 
 		File.saveContent(path, errMsg + "\n");
 
@@ -150,23 +153,7 @@ class Main extends Sprite
 		Sys.println("Crash dump saved in " + Path.normalize(path));
 
 		Application.current.window.alert(errMsg, "Error!");
-		#if desktop
-		DiscordClient.shutdown();
-		#end
 		Sys.exit(1);
 	}
 	#end
-}
-
-// For collecting users system information to give them support easier.
-// Worried? See the SystemData.hx to see what it's collecting.
-function collectSystemData():Void
-{
-	var systemInfo = new SystemData();
-	var path:String;
-
-	path = "./" + "SystemData.txt";
-
-	if (!FileSystem.exists("./" + "SystemData.txt"))
-		File.saveContent(path, systemInfo.toString() + "\n");
 }
