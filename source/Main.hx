@@ -45,7 +45,7 @@ class Main extends Sprite
 
 	// You can pretty much ignore everything from here on - your code should go in your states.
 
-	public static var ata = System.applicationStorageDirectory(); // só para o filesystem n crashar 
+	public static var ata = System.applicationStorageDirectory; // só para o filesystem n crashar 
 	
 	public static function main():Void
 	{
@@ -109,7 +109,7 @@ class Main extends Sprite
 		FlxG.mouse.visible = false;
 		#end
 		
-		collectSystemData();
+	//	collectSystemData();
 
 		#if CRASH_HANDLER
 		Lib.current.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, onCrash);
