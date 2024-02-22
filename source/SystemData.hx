@@ -1,9 +1,8 @@
 package;
-#if sys
-	import sys.io.Process;
-#end
-#if flash
-	import flash.system.Capabilities;
+#if desktop
+import sys.io.Process;
+#elseif flash
+import flash.system.Capabilities;
 #end
 
 /**
@@ -57,7 +56,7 @@ class SystemData
 				runProcess("assets/tools/memory.bat", [], processMemory);
 				runProcess("assets/tools/cpu.bat", [], processCPU);
 				runProcess("assets/tools/gpu.bat", [], processGPU);
-			#elseif linux
+			#elseif linux //aqui e chorar
 				// must set file to executable first
 				runProcess("chmod", [ "a+x","assets/tools/os.sh"], dummy);
 				runProcess("chmod", [ "a+x","assets/tools/memory.sh"], dummy);
@@ -151,7 +150,7 @@ class SystemData
 	
 	private function runProcess(commandStr:String, commandArgs:Array<String>, processFunc:String->Void):Void
 	{
-		#if sys
+		#if desktop
 			var p:Process = null;
 			try
 			{
@@ -261,7 +260,7 @@ class SystemData
 					default:			osName = "Windows (unknown version)";
 				}
 			}
-		#elseif linux
+		#elseif android
 			var temp = line.split("\n");
 			if (temp != null && temp.length >= 2)
 			{
@@ -308,7 +307,7 @@ class SystemData
 				line = stripWord(line,"TotalVisibleMemorySize=");
 				totalMemory = Std.parseInt(line);
 			}
-		#elseif linux
+		#elseif android //quem sabe
 			totalMemory = Std.parseInt(line);
 		#elseif mac
 			totalMemory = Std.parseInt(line) * 1024 * 1024;
@@ -327,7 +326,7 @@ class SystemData
 			{
 				cpuName = "unknown";
 			}
-		#elseif linux
+		#elseif android
 			cpuName = stripWord(line,"\n");
 		#elseif mac
 			cpuName = stripEndLines(line);
@@ -355,7 +354,7 @@ class SystemData
 					}
 				}
 			}
-		#elseif linux
+		#elseif android
 			gpuName = line;
 			gpuDriverVersion = "unknown";
 		#elseif mac
