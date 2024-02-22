@@ -37,6 +37,10 @@ class GameOverSubstate extends MusicBeatSubstate
 		instance = this;
 		PlayState.instance.callOnLuas('onGameOverStart', []);
 
+		#if android
+		addVirtualPad(NONE, A_B);
+		#end
+
 		super.create();
 	}
 
@@ -104,11 +108,7 @@ class GameOverSubstate extends MusicBeatSubstate
 			Conductor.songPosition = FlxG.sound.music.time;
 		}
 		PlayState.instance.callOnLuas('onUpdatePost', [elapsed]);
-
-		#if android
-		addVirtualPad(NONE, A_B);
-		addPadCamera();
-		#end
+		
 	}
 
 	override function beatHit()
