@@ -114,11 +114,6 @@ class StoryMenuState extends MusicBeatState
 		startButton.x = 535;
 		startButton.y = 385;
 
-		#if android
-		addVirtualPad(NONE, A);
-		addPadCamera();
-		#end
-
 		FlxG.mouse.visible = true;
 	}
 	
